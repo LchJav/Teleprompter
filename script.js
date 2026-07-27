@@ -169,9 +169,8 @@ function tick(){
 
     const paddingBottom = parseFloat(window.getComputedStyle(scriptText).paddingBottom) || (window.innerHeight * 0.9);
     const textBottom = scrollArea.offsetHeight - paddingBottom;
-    const readLineY = stage.offsetHeight * (parseFloat(readPos.value) / 100);
 
-    if (-posY >= (textBottom - readLineY + 60)) {
+    if (-posY >= textBottom) {
       stopBtn.click();
     }
   }
