@@ -166,6 +166,14 @@ setSide(side);
 function tick(){
   if(playing){
     posY -= currentSpeed() * 0.6;
+
+    const paddingBottom = parseFloat(window.getComputedStyle(scriptText).paddingBottom) || (window.innerHeight * 0.9);
+    const textBottom = scrollArea.offsetHeight - paddingBottom;
+    const readLineY = stage.offsetHeight * (parseFloat(readPos.value) / 100);
+
+    if (-posY >= (textBottom - readLineY + 60)) {
+      stopBtn.click();
+    }
   }
   if(Math.abs(nudgeOffset) > 0.5){
     const move = nudgeOffset * 0.18;
