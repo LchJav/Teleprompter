@@ -17,9 +17,38 @@ const helpClose = document.getElementById('helpClose');
 
 const colorBtn = document.getElementById('colorBtn');
 const colorMenu = document.getElementById('colorMenu');
+const themeBtn = document.getElementById('themeBtn');
+
+function applyTheme(theme) {
+  const normalized = theme === 'dark' ? 'dark' : 'light';
+  document.documentElement.dataset.theme = normalized;
+  themeBtn.setAttribute(
+    'title',
+    normalized === 'dark' ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro'
+  );
+  themeBtn.setAttribute('aria-pressed', normalized === 'dark' ? 'true' : 'false');
+  try {
+    localStorage.setItem('teleprompter_theme', normalized);
+  } catch (_) {}
+  if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.theme) {
+    window.webkit.messageHandlers.theme.postMessage(normalized);
+  }
+}
+
+let initialTheme = 'light';
+try {
+  initialTheme = localStorage.getItem('teleprompter_theme') || 'light';
+} catch (_) {}
+applyTheme(initialTheme);
+
+themeBtn.addEventListener('click', () => {
+  const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  applyTheme(next);
+});
 
 colorBtn.addEventListener('click', (e) => {
   e.stopPropagation();
+  sideMenu.classList.remove('show');
   colorMenu.classList.toggle('show');
 });
 
@@ -37,6 +66,23 @@ document.addEventListener('click', () => {
 });
 
 colorMenu.querySelector('[data-color="#3fb8a6"]').classList.add('active');
+
+document.querySelectorAll('.step-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const input = document.getElementById(btn.dataset.target);
+    if (!input) return;
+    const step = parseFloat(input.step) || 1;
+    const min = input.min !== '' ? parseFloat(input.min) : -Infinity;
+    const max = input.max !== '' ? parseFloat(input.max) : Infinity;
+    const current = parseFloat(input.value) || 0;
+    const delta = btn.dataset.dir === 'up' ? step : -step;
+    const rawNext = Math.min(max, Math.max(min, current + delta));
+    const decimals = (input.step && input.step.includes('.')) ? input.step.split('.')[1].length : 0;
+    input.value = decimals > 0 ? rawNext.toFixed(decimals) : Math.round(rawNext);
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+});
 
 helpBtn.addEventListener('click', (e) => {
   e.stopPropagation();
@@ -147,6 +193,7 @@ function setSide(newSide){
 
 sideBtn.addEventListener('click', (e) => {
   e.stopPropagation();
+  colorMenu.classList.remove('show');
   sideMenu.classList.toggle('show');
 });
 

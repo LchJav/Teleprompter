@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teleprompter</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%230b0b0c%22/%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%2260%22%20height%3D%2260%22%20rx%3D%2212%22%20fill%3D%22none%22%20stroke%3D%22%232a2a2d%22%20stroke-width%3D%222%22/%3E%3Crect%20x%3D%2210%22%20y%3D%2229%22%20width%3D%2244%22%20height%3D%223%22%20fill%3D%22%233fb8a6%22%20opacity%3D%220.35%22/%3E%3Cpolygon%20points%3D%2210%2C24%2020%2C30.5%2010%2C37%22%20fill%3D%22%233fb8a6%22/%3E%3Crect%20x%3D%2224%22%20y%3D%2218%22%20width%3D%2228%22%20height%3D%224%22%20rx%3D%222%22%20fill%3D%22%238a8a8f%22%20opacity%3D%220.6%22/%3E%3Crect%20x%3D%2224%22%20y%3D%2228%22%20width%3D%2230%22%20height%3D%224%22%20rx%3D%222%22%20fill%3D%22%23f4f4f2%22/%3E%3Crect%20x%3D%2224%22%20y%3D%2238%22%20width%3D%2222%22%20height%3D%224%22%20rx%3D%222%22%20fill%3D%22%23f4f4f2%22/%3E%3Crect%20x%3D%2224%22%20y%3D%2248%22%20width%3D%2226%22%20height%3D%224%22%20rx%3D%222%22%20fill%3D%22%238a8a8f%22%20opacity%3D%220.6%22/%3E%3C/svg%3E">
+  <style>
+:root,
+[data-theme="light"] {
+  --accent: #0d9488;
+  --accent-deep: #059669;
+  --accent-contrast: #ffffff;
+  --window-bg: #eef2f6;
+  --stage-bg: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --label-color: #64748b;
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-btn-bg: rgba(255, 255, 255, 0.82);
+  --glass-btn-hover: rgba(255, 255, 255, 0.96);
+  --glass-input-bg: rgba(255, 255, 255, 0.92);
+  --glass-dropdown-bg: rgba(255, 255, 255, 0.92);
+  --glass-border: rgba(15, 23, 42, 0.1);
+  --glass-border-strong: rgba(15, 23, 42, 0.18);
+  --glass-highlight: rgba(255, 255, 255, 0.88);
+  --glass-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.08);
+  --btn-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.9), 0 1px 3px rgba(15, 23, 42, 0.06);
+  --btn-shadow-hover: inset 0 1px 1px rgba(255, 255, 255, 1), 0 3px 8px rgba(15, 23, 42, 0.1);
+  --divider: rgba(15, 23, 42, 0.12);
+  --slider-track: rgba(15, 23, 42, 0.14);
+  --thumb-border: #ffffff;
+  --guide-line: rgba(100, 116, 139, 0.58);
+  --guide-dot: #64748b;
+  --edit-bg: rgba(248, 250, 252, 0.92);
+  --textarea-bg: rgba(255, 255, 255, 0.96);
+  --menu-hover: rgba(15, 23, 42, 0.06);
+  --stop-hover-bg: rgba(239, 68, 68, 0.1);
+  --stop-hover-border: rgba(220, 38, 38, 0.45);
+  --stop-hover-text: #dc2626;
+  --aurora-opacity: 0.22;
+}
+
+[data-theme="dark"] {
+  --accent: #3fb8a6;
+  --accent-deep: #14b8a6;
+  --accent-contrast: #061311;
+  --window-bg: #08090c;
+  --stage-bg: #050507;
+  --text: #f4f4f2;
+  --muted: #a1a1aa;
+  --label-color: #8a8a96;
+  --glass-bg: rgba(22, 23, 28, 0.72);
+  --glass-btn-bg: rgba(255, 255, 255, 0.07);
+  --glass-btn-hover: rgba(255, 255, 255, 0.14);
+  --glass-input-bg: rgba(10, 11, 14, 0.65);
+  --glass-dropdown-bg: rgba(24, 25, 31, 0.88);
+  --glass-border: rgba(255, 255, 255, 0.11);
+  --glass-border-strong: rgba(255, 255, 255, 0.22);
+  --glass-highlight: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 12px 32px -10px rgba(0, 0, 0, 0.55);
+  --btn-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 1px 3px rgba(0, 0, 0, 0.35);
+  --btn-shadow-hover: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 4px 10px rgba(0, 0, 0, 0.45);
+  --divider: rgba(255, 255, 255, 0.12);
+  --slider-track: rgba(255, 255, 255, 0.16);
+  --thumb-border: #121316;
+  --guide-line: rgba(148, 163, 184, 0.5);
+  --guide-dot: #94a3b8;
+  --edit-bg: rgba(10, 10, 13, 0.92);
+  --textarea-bg: rgba(20, 21, 25, 0.92);
+  --menu-hover: rgba(255, 255, 255, 0.08);
+  --stop-hover-bg: rgba(224, 69, 58, 0.18);
+  --stop-hover-border: rgba(224, 69, 58, 0.55);
+  --stop-hover-text: #ff7b70;
+  --aurora-opacity: 0.16;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+  background: var(--window-bg);
+  color: var(--text);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+/* Ambient aurora background behind frosted glass bar */
+.ambient-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.aurora {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(110px);
+  opacity: var(--aurora-opacity);
+  transition: opacity 0.3s ease;
+}
+
+.aurora-1 {
+  top: -180px;
+  left: -120px;
+  width: 480px;
+  height: 480px;
+  background: var(--accent);
+}
+
+.aurora-2 {
+  top: -140px;
+  right: -80px;
+  width: 420px;
+  height: 420px;
+  background: #38bdf8;
+}
+
+.aurora-3 {
+  bottom: -180px;
+  left: 35%;
+  width: 520px;
+  height: 520px;
+  background: #10b981;
+}
+
+/* Frosted Glass Top Control Panel */
+#topbar.glass-panel {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 20px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-highlight);
+  transition: transform 0.25s ease, opacity 0.25s ease, background 0.25s ease;
+}
+
+#topbar.hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+}
+
+.topbar-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 18px;
+}
+
+.row-actions {
+  gap: 8px;
+  padding-top: 2px;
+}
+
+.group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-right: 18px;
+  border-right: 1px solid var(--divider);
+}
+
+.group:last-child {
+  border-right: none;
+  padding-right: 0;
+}
+
+.group-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  color: var(--label-color);
+  user-select: none;
+}
+
+.control-item {
+  font-size: 12px;
+  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  user-select: none;
+}
+
+.checkbox-item {
+  cursor: pointer;
+}
+
+.mono-readout {
+  min-width: 26px;
+  text-align: center;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+/* Glass Buttons */
+button.glass-btn,
+button.glow-accent-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 13px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+  font-family: inherit;
+  transition: all 0.16s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+}
+
+button.glass-btn {
+  background: var(--glass-btn-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text);
+  box-shadow: var(--btn-shadow);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+button.glass-btn:hover {
+  background: var(--glass-btn-hover);
+  border-color: var(--glass-border-strong);
+  box-shadow: var(--btn-shadow-hover);
+}
+
+button.glass-btn:active {
+  transform: scale(0.97);
+}
+
+button.glass-btn:focus-visible,
+button.glow-accent-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+button.icon-only-btn {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  font-weight: 700;
+}
+
+/* Primary Glowing Accent Button */
+button.glow-accent-btn {
+  background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 72%, #000000));
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: #ffffff;
+  font-weight: 700;
+  padding: 6px 14px;
+  box-shadow: 0 2px 10px color-mix(in srgb, var(--accent) 38%, transparent), inset 0 1px 1px rgba(255, 255, 255, 0.38);
+}
+
+button.glow-accent-btn:hover {
+  filter: brightness(1.06);
+  transform: translateY(-0.5px);
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--accent) 50%, transparent), inset 0 1px 1.5px rgba(255, 255, 255, 0.5);
+}
+
+button.glow-accent-btn:active {
+  transform: scale(0.97);
+}
+
+#stopBtn:hover {
+  background: var(--stop-hover-bg);
+  border-color: var(--stop-hover-border);
+  color: var(--stop-hover-text);
+}
+
+#stopBtn:focus-visible {
+  outline-color: #e0453a;
+}
+
+/* Floating Show Controls Pill */
+#showControlsBtn {
+  display: none;
+  position: fixed;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  font-size: 13px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+#showControlsBtn:hover {
+  transform: translateX(-50%) translateY(-1px);
+}
+
+#showControlsBtn.show {
+  display: inline-flex;
+}
+
+/* Range Sliders */
+input[type=range].glass-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 96px;
+  height: 16px;
+  background: transparent;
+  outline: none;
+  cursor: pointer;
+  margin: 0;
+}
+
+input[type=range].glass-slider.slider-sm {
+  width: 78px;
+}
+
+input[type=range].glass-slider::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 4px;
+  background: var(--slider-track);
+  border-radius: 9999px;
+}
+
+input[type=range].glass-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 1.5px solid var(--thumb-border);
+  box-shadow: 0 1px 4px color-mix(in srgb, var(--accent) 45%, transparent), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  margin-top: -5px;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.15s ease;
+}
+
+input[type=range].glass-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.18);
+}
+
+input[type=range].glass-slider::-moz-range-track {
+  width: 100%;
+  height: 4px;
+  background: var(--slider-track);
+  border-radius: 9999px;
+}
+
+input[type=range].glass-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 1.5px solid var(--thumb-border);
+  cursor: pointer;
+}
+
+/* Glass Stepper Number Input */
+.glass-input.stepper-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  background: var(--glass-input-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  padding: 2px 6px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: border-color 0.15s ease;
+}
+
+.glass-input.stepper-box:focus-within {
+  border-color: var(--accent);
+}
+
+.glass-input.stepper-box input[type=number] {
+  width: 34px;
+  background: transparent;
+  border: none;
+  padding: 2px 0;
+  text-align: center;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text);
+  outline: none;
+  -moz-appearance: textfield;
+}
+
+.glass-input.stepper-box input[type=number]::-webkit-inner-spin-button,
+.glass-input.stepper-box input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.stepper-arrows {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.step-btn {
+  background: none;
+  border: none;
+  padding: 0 2px;
+  margin: 0;
+  font-size: 7px;
+  line-height: 1.1;
+  color: var(--label-color);
+  cursor: pointer;
+  transition: color 0.12s ease;
+}
+
+.step-btn:hover {
+  color: var(--accent);
+}
+
+input[type=checkbox] {
+  width: 14px;
+  height: 14px;
+  accent-color: var(--accent);
+  cursor: pointer;
+  margin: 0;
+}
+
+/* Dropdown Menus */
+.dropdown-wrap {
+  position: relative;
+}
+
+.glass-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  background: var(--glass-dropdown-bg);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  padding: 6px;
+  min-width: 164px;
+  z-index: 30;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.16);
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.glass-dropdown.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#sideMenu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  padding: 7px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.12s ease;
+}
+
+#sideMenu button:hover {
+  background: var(--menu-hover);
+}
+
+#sideMenu button.active {
+  background: var(--accent);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+#colorMenu .swatchRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 7px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--text);
+  font-size: 12px;
+  font-family: inherit;
+  transition: background 0.12s ease;
+}
+
+#colorMenu .swatchRow:hover,
+#colorMenu .swatchRow.active {
+  background: var(--menu-hover);
+}
+
+#colorMenu .swatchRow.active {
+  font-weight: 600;
+}
+
+.swatch {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 1px solid rgba(128, 128, 128, 0.3);
+}
+
+/* Teleprompter Stage */
+#stage {
+  flex: 1;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  background: var(--stage-bg);
+  transition: background 0.25s ease;
+}
+
+#statusIndicator {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 7;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--guide-dot);
+  opacity: 0.4;
+  transition: background 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  pointer-events: none;
+}
+
+#statusIndicator.playing {
+  background: #22c55e;
+  opacity: 1;
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.75);
+}
+
+#camLine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--guide-line);
+  z-index: 6;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+#camLine::before {
+  content: "";
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--guide-dot);
+}
+
+#camLine.hidden-line {
+  opacity: 0;
+}
+
+#readLine {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 0;
+  border-top: 1.5px dashed var(--guide-line);
+  z-index: 6;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+#readLine.hidden-line {
+  opacity: 0;
+}
+
+#scrollArea {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  will-change: transform;
+  padding: 0 8vw;
+}
+
+#scriptText {
+  font-size: 48px;
+  line-height: 1.48;
+  font-weight: 500;
+  text-align: left;
+  color: var(--text);
+  white-space: pre-wrap;
+  padding-top: 70vh;
+  padding-bottom: 90vh;
+  max-width: 45%;
+  transition: color 0.25s ease;
+}
+
+#scriptText.side-right {
+  margin-left: auto;
+  text-align: right;
+}
+
+/* Help Modal */
+#helpPanel.glass-modal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.96);
+  background: var(--glass-dropdown-bg);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 28px 32px;
+  width: 480px;
+  max-width: 90vw;
+  z-index: 40;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+  opacity: 0;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+#helpPanel.show {
+  display: block;
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+#helpPanel h3 {
+  margin: 0 0 10px;
+  font-size: 20px;
+}
+
+#helpPanel p {
+  margin: 0 0 16px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+#helpPanel h4 {
+  margin: 0 0 10px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--label-color);
+}
+
+#helpPanel table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+#helpPanel td {
+  padding: 8px 0;
+  border-top: 1px solid var(--divider);
+}
+
+#helpPanel td:first-child {
+  color: var(--accent);
+  font-weight: 600;
+  width: 100px;
+}
+
+#helpClose {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  padding: 5px 10px;
+}
+
+/* Script Editor Overlay */
+#editArea {
+  position: fixed;
+  inset: 0;
+  background: var(--edit-bg);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  z-index: 20;
+  display: none;
+  flex-direction: column;
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+#editArea.show {
+  display: flex;
+  opacity: 1;
+}
+
+#editArea .row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.edit-hint {
+  font-size: 14px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+#editArea textarea {
+  flex: 1;
+  background: var(--textarea-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 18px;
+  line-height: 1.6;
+  border-radius: 12px;
+  padding: 18px;
+  resize: none;
+  outline: none;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+#editArea textarea:focus {
+  border-color: var(--accent);
+}
+
+  </style>
+</head>
+
+<body>
+  <!-- Ambient aurora glows for glass refraction -->
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="aurora aurora-1"></div>
+    <div class="aurora aurora-2"></div>
+    <div class="aurora aurora-3"></div>
+  </div>
+
+  <div id="topbar" class="glass-panel" role="region" aria-label="Controles del Teleprompter">
+    <!-- Row 1: Reproducción, Guion, Velocidad, Cámara -->
+    <div class="topbar-row">
+      <div class="group">
+        <span class="group-label">Reproducción</span>
+        <button id="playBtn" class="primary glow-accent-btn" type="button">▶ Iniciar</button>
+        <button id="stopBtn" class="glass-btn" type="button">■ Detener</button>
+      </div>
+
+      <div class="group">
+        <span class="group-label">Guion</span>
+        <button id="editBtn" class="glass-btn" type="button">✎ Editar guion</button>
+      </div>
+
+      <div class="group">
+        <span class="group-label">Velocidad</span>
+        <label class="control-item">
+          <span>Auto</span>
+          <input type="range" id="speed" class="glass-slider" min="0" max="8" step="1" value="0">
+          <span id="speedOut" class="mono-readout">0.7</span>
+        </label>
+        <label class="control-item">
+          <span>Manual</span>
+          <span class="glass-input stepper-box">
+            <input type="number" id="speedManual" min="0.1" max="20" step="0.1" value="0.7">
+            <span class="stepper-arrows" aria-hidden="true">
+              <button type="button" class="step-btn" data-target="speedManual" data-dir="up" tabindex="-1">▲</button>
+              <button type="button" class="step-btn" data-target="speedManual" data-dir="down" tabindex="-1">▼</button>
+            </span>
+          </span>
+        </label>
+      </div>
+
+      <div class="group">
+        <span class="group-label">Cámara</span>
+        <div class="dropdown-wrap">
+          <button id="sideBtn" class="glass-btn" type="button">Cámara: izquierda ▾</button>
+          <div id="sideMenu" class="glass-dropdown">
+            <button type="button" data-side="left">Izquierda</button>
+            <button type="button" data-side="right">Derecha</button>
+            <button type="button" data-side="center">Centro</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2: Líneas guía, Texto, Ancho -->
+    <div class="topbar-row">
+      <div class="group">
+        <span class="group-label">Líneas guía</span>
+        <label class="control-item">
+          <span>Vertical (%)</span>
+          <input type="range" id="camPos" class="glass-slider slider-sm" min="0" max="40" value="10">
+        </label>
+        <label class="control-item">
+          <span>Horizontal (%)</span>
+          <input type="range" id="readPos" class="glass-slider slider-sm" min="10" max="80" value="42">
+        </label>
+        <label class="control-item checkbox-item">
+          <span>Mostrar</span>
+          <input type="checkbox" id="linesToggle" checked>
+        </label>
+      </div>
+
+      <div class="group">
+        <span class="group-label">Texto</span>
+        <label class="control-item">
+          <span>Letra (px)</span>
+          <span class="glass-input stepper-box">
+            <input type="number" id="fontSize" min="20" max="120" step="2" value="48">
+            <span class="stepper-arrows" aria-hidden="true">
+              <button type="button" class="step-btn" data-target="fontSize" data-dir="up" tabindex="-1">▲</button>
+              <button type="button" class="step-btn" data-target="fontSize" data-dir="down" tabindex="-1">▼</button>
+            </span>
+          </span>
+        </label>
+        <label class="control-item checkbox-item">
+          <span>Espejo</span>
+          <input type="checkbox" id="mirror">
+        </label>
+      </div>
+
+      <div class="group">
+        <span class="group-label">Ancho</span>
+        <label class="control-item">
+          <span>%</span>
+          <input type="range" id="textWidth" class="glass-slider slider-sm" min="25" max="70" value="45">
+        </label>
+      </div>
+    </div>
+
+    <!-- Row 3: Acciones secundarias -->
+    <div class="topbar-row row-actions">
+      <button id="hideBtn" class="glass-btn" type="button">Ocultar controles</button>
+
+      <div class="dropdown-wrap">
+        <button id="colorBtn" class="glass-btn" type="button">
+          <svg width="14" height="14" viewBox="0 0 32 32" aria-hidden="true">
+            <path d="M16 16 L16 1 A15 15 0 0 1 29 8.5 Z" fill="#ff5f4a" />
+            <path d="M16 16 L29 8.5 A15 15 0 0 1 29 23.5 Z" fill="#ffcc33" />
+            <path d="M16 16 L29 23.5 A15 15 0 0 1 16 31 Z" fill="#3fb8a6" />
+            <path d="M16 16 L16 31 A15 15 0 0 1 3 23.5 Z" fill="#5b7fdb" />
+            <path d="M16 16 L3 23.5 A15 15 0 0 1 3 8.5 Z" fill="#8b7fd6" />
+            <path d="M16 16 L3 8.5 A15 15 0 0 1 16 1 Z" fill="#d9a441" />
+          </svg>
+          <span>Color</span>
+        </button>
+        <div id="colorMenu" class="glass-dropdown">
+          <button type="button" class="swatchRow" data-color="#3fb8a6" data-name="teal"><span class="swatch"
+              style="background:#3fb8a6;"></span>Teal</button>
+          <button type="button" class="swatchRow" data-color="#e8734a" data-name="orange"><span class="swatch"
+              style="background:#e8734a;"></span>Naranja</button>
+          <button type="button" class="swatchRow" data-color="#5b7fdb" data-name="indigo"><span class="swatch"
+              style="background:#5b7fdb;"></span>Azul índigo</button>
+          <button type="button" class="swatchRow" data-color="#d9a441" data-name="amber"><span class="swatch"
+              style="background:#d9a441;"></span>Ámbar</button>
+          <button type="button" class="swatchRow" data-color="#8b7fd6" data-name="violet"><span class="swatch"
+              style="background:#8b7fd6;"></span>Violeta</button>
+        </div>
+      </div>
+
+      <button id="themeBtn" class="glass-btn" type="button" title="Cambiar entre tema claro y oscuro">
+        <span aria-hidden="true">🌓</span>
+        <span>Tema</span>
+      </button>
+
+      <button id="helpBtn" class="glass-btn icon-only-btn" type="button" aria-label="Ayuda y atajos">?</button>
+    </div>
+  </div>
+
+  <button id="showControlsBtn" class="glass-btn" type="button">☰ Mostrar controles</button>
+
+  <div id="helpPanel" class="glass-modal">
+    <button id="helpClose" class="glass-btn" type="button" aria-label="Cerrar">✕</button>
+    <h3>Teleprompter</h3>
+    <p>Herramienta para leer tu guion mientras grabas, superponiendo tu celular sobre la laptop. Ajusta las líneas guía
+      para alinear tu mirada con la cámara y controla la velocidad de desplazamiento a tu ritmo.</p>
+    <p>Las líneas guía marcan dónde apoyar el celular (línea vertical, según el lado de cámara elegido) y dónde debes
+      leer en cada momento (línea horizontal, fija). No aparecen en el video grabado.</p>
+    <h4>Atajos de teclado</h4>
+    <table>
+      <tr>
+        <td>Espacio</td>
+        <td>Pausa / reanuda</td>
+      </tr>
+      <tr>
+        <td>↑ / ↓</td>
+        <td>Mover guion manualmente</td>
+      </tr>
+      <tr>
+        <td>← / →</td>
+        <td>Reducir / aumentar velocidad</td>
+      </tr>
+      <tr>
+        <td>S</td>
+        <td>Detener (vuelve al inicio)</td>
+      </tr>
+      <tr>
+        <td>D</td>
+        <td>Editar guion</td>
+      </tr>
+      <tr>
+        <td>H</td>
+        <td>Ocultar / mostrar controles</td>
+      </tr>
+    </table>
+  </div>
+
+  <main id="stage">
+    <div id="statusIndicator" title="Estado de reproducción"></div>
+    <div id="camLine"></div>
+    <div id="readLine"></div>
+    <div id="scrollArea">
+      <div id="scriptText">Toca "Editar guion" y pega o escribe tu texto aquí.
+
+Puedes escoger "Cámara: izquierda/derecha/centro" para elegir el lado donde apoyarás el celular, y ajusta "Vertical / Horizontal" para alinear las líneas guía con tu lente.
+
+Pulsa Iniciar para comenzar. Espacio: pausa/reanuda. La velocidad cambia con las flechas. Puedes ver las opciones en el botón de pregunta (?)</div>
+    </div>
+  </main>
+
+  <div id="editArea">
+    <div class="row">
+      <span class="edit-hint">Escribe o pega tu guion</span>
+      <button id="doneEditBtn" class="primary glow-accent-btn" type="button">Listo</button>
+    </div>
+    <textarea id="scriptInput" placeholder="Escribe aquí tu guion..."></textarea>
+  </div>
+
+  <script>
+const scrollArea = document.getElementById('scrollArea');
+const scriptText = document.getElementById('scriptText');
+const stage = document.getElementById('stage');
+const playBtn = document.getElementById('playBtn');
+const stopBtn = document.getElementById('stopBtn');
+const editBtn = document.getElementById('editBtn');
+const doneEditBtn = document.getElementById('doneEditBtn');
+const editArea = document.getElementById('editArea');
+const scriptInput = document.getElementById('scriptInput');
+const speedInput = document.getElementById('speed');
+const fontSizeInput = document.getElementById('fontSize');
+const mirrorInput = document.getElementById('mirror');
+const hideBtn = document.getElementById('hideBtn');
+const helpBtn = document.getElementById('helpBtn');
+const helpPanel = document.getElementById('helpPanel');
+const helpClose = document.getElementById('helpClose');
+
+const colorBtn = document.getElementById('colorBtn');
+const colorMenu = document.getElementById('colorMenu');
+const themeBtn = document.getElementById('themeBtn');
+
+function applyTheme(theme) {
+  const normalized = theme === 'dark' ? 'dark' : 'light';
+  document.documentElement.dataset.theme = normalized;
+  themeBtn.setAttribute(
+    'title',
+    normalized === 'dark' ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro'
+  );
+  themeBtn.setAttribute('aria-pressed', normalized === 'dark' ? 'true' : 'false');
+  try {
+    localStorage.setItem('teleprompter_theme', normalized);
+  } catch (_) {}
+  if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.theme) {
+    window.webkit.messageHandlers.theme.postMessage(normalized);
+  }
+}
+
+let initialTheme = 'light';
+try {
+  initialTheme = localStorage.getItem('teleprompter_theme') || 'light';
+} catch (_) {}
+applyTheme(initialTheme);
+
+themeBtn.addEventListener('click', () => {
+  const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  applyTheme(next);
+});
+
+colorBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  sideMenu.classList.remove('show');
+  colorMenu.classList.toggle('show');
+});
+
+colorMenu.querySelectorAll('.swatchRow').forEach(row => {
+  row.addEventListener('click', () => {
+    document.documentElement.style.setProperty('--accent', row.dataset.color);
+    colorMenu.querySelectorAll('.swatchRow').forEach(r => r.classList.remove('active'));
+    row.classList.add('active');
+    colorMenu.classList.remove('show');
+  });
+});
+
+document.addEventListener('click', () => {
+  colorMenu.classList.remove('show');
+});
+
+colorMenu.querySelector('[data-color="#3fb8a6"]').classList.add('active');
+
+document.querySelectorAll('.step-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const input = document.getElementById(btn.dataset.target);
+    if (!input) return;
+    const step = parseFloat(input.step) || 1;
+    const min = input.min !== '' ? parseFloat(input.min) : -Infinity;
+    const max = input.max !== '' ? parseFloat(input.max) : Infinity;
+    const current = parseFloat(input.value) || 0;
+    const delta = btn.dataset.dir === 'up' ? step : -step;
+    const rawNext = Math.min(max, Math.max(min, current + delta));
+    const decimals = (input.step && input.step.includes('.')) ? input.step.split('.')[1].length : 0;
+    input.value = decimals > 0 ? rawNext.toFixed(decimals) : Math.round(rawNext);
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+});
+
+helpBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  helpPanel.classList.toggle('show');
+});
+helpClose.addEventListener('click', () => {
+  helpPanel.classList.remove('show');
+});
+document.addEventListener('click', (e) => {
+  if(helpPanel.classList.contains('show') && !helpPanel.contains(e.target)){
+    helpPanel.classList.remove('show');
+  }
+});
+const topbar = document.getElementById('topbar');
+const camPos = document.getElementById('camPos');
+const camLine = document.getElementById('camLine');
+const sideBtn = document.getElementById('sideBtn');
+const speedOut = document.getElementById('speedOut');
+const textWidthInput = document.getElementById('textWidth');
+const readPos = document.getElementById('readPos');
+const readLine = document.getElementById('readLine');
+
+readPos.addEventListener('input', () => {
+  readLine.style.top = readPos.value + '%';
+});
+readLine.style.top = readPos.value + '%';
+
+const linesToggle = document.getElementById('linesToggle');
+linesToggle.addEventListener('change', () => {
+  camLine.classList.toggle('hidden-line', !linesToggle.checked);
+  readLine.classList.toggle('hidden-line', !linesToggle.checked);
+});
+
+textWidthInput.addEventListener('input', () => {
+  scriptText.style.maxWidth = textWidthInput.value + '%';
+});
+scriptText.style.maxWidth = textWidthInput.value + '%';
+
+const speedManual = document.getElementById('speedManual');
+
+const speedLevels = [0.7, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5];
+
+let manualSpeed = null;
+
+function currentSpeed(){
+  if(manualSpeed !== null) return manualSpeed;
+  return speedLevels[parseInt(speedInput.value, 10)];
+}
+
+speedInput.addEventListener('input', () => {
+  manualSpeed = null;
+  const val = currentSpeed();
+  speedOut.textContent = val;
+  speedManual.value = val;
+});
+
+speedManual.addEventListener('input', () => {
+  const v = parseFloat(speedManual.value);
+  if(!isNaN(v) && v > 0){
+    manualSpeed = v;
+    speedOut.textContent = v;
+  }
+});
+
+let playing = false;
+let posY = 0;
+let nudgeOffset = 0;
+let rafId = null;
+let side = 'left';
+const sideLabels = {left:'Cámara: izquierda ⇄', right:'Cámara: derecha ⇄', center:'Cámara: centro ⇄'};
+const sideOrder = ['left','right','center'];
+
+function updateCamLine(){
+  const dist = camPos.value + '%';
+  scriptText.classList.remove('side-right');
+  if(side === 'left'){
+    camLine.style.left = dist;
+    camLine.style.right = 'auto';
+    scriptText.style.marginLeft = '0';
+    scriptText.style.marginRight = 'auto';
+  } else if(side === 'right'){
+    camLine.style.right = dist;
+    camLine.style.left = 'auto';
+    scriptText.classList.add('side-right');
+    scriptText.style.marginLeft = 'auto';
+    scriptText.style.marginRight = '0';
+  } else {
+    camLine.style.left = '50%';
+    camLine.style.right = 'auto';
+    scriptText.style.textAlign = 'center';
+    scriptText.style.marginLeft = 'auto';
+    scriptText.style.marginRight = 'auto';
+  }
+}
+camPos.addEventListener('input', updateCamLine);
+
+const sideMenu = document.getElementById('sideMenu');
+
+function setSide(newSide){
+  side = newSide;
+  sideBtn.textContent = sideLabels[side].replace('⇄','▾');
+  if(side !== 'center') scriptText.style.textAlign = (side === 'right') ? 'right' : 'left';
+  updateCamLine();
+  sideMenu.querySelectorAll('button').forEach(b => {
+    b.classList.toggle('active', b.dataset.side === side);
+  });
+}
+
+sideBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  colorMenu.classList.remove('show');
+  sideMenu.classList.toggle('show');
+});
+
+sideMenu.querySelectorAll('button').forEach(b => {
+  b.addEventListener('click', () => {
+    setSide(b.dataset.side);
+    sideMenu.classList.remove('show');
+  });
+});
+
+document.addEventListener('click', () => {
+  sideMenu.classList.remove('show');
+});
+
+setSide(side);
+
+function tick(){
+  if(playing){
+    posY -= currentSpeed() * 0.6;
+
+    const paddingBottom = parseFloat(window.getComputedStyle(scriptText).paddingBottom) || (window.innerHeight * 0.9);
+    const textBottom = scrollArea.offsetHeight - paddingBottom;
+
+    if (-posY >= textBottom) {
+      stopBtn.click();
+    }
+  }
+  if(Math.abs(nudgeOffset) > 0.5){
+    const move = nudgeOffset * 0.18;
+    posY += move;
+    nudgeOffset -= move;
+  } else {
+    nudgeOffset = 0;
+  }
+  scrollArea.style.transform = 'translateY(' + posY + 'px)';
+  rafId = requestAnimationFrame(tick);
+}
+tick();
+
+const statusIndicator = document.getElementById('statusIndicator');
+
+playBtn.addEventListener('click', () => {
+  playing = !playing;
+  playBtn.textContent = playing ? '⏸ Pausar' : '▶ Iniciar';
+  statusIndicator.classList.toggle('playing', playing);
+});
+
+stopBtn.addEventListener('click', () => {
+  posY = 0;
+  nudgeOffset = 0;
+  scrollArea.style.transform = 'translateY(0px)';
+  playing = false;
+  playBtn.textContent = '▶ Iniciar';
+  statusIndicator.classList.remove('playing');
+});
+
+fontSizeInput.addEventListener('input', () => {
+  scriptText.style.fontSize = fontSizeInput.value + 'px';
+});
+
+mirrorInput.addEventListener('change', () => {
+  stage.style.transform = mirrorInput.checked ? 'scaleX(-1)' : 'none';
+});
+
+editBtn.addEventListener('click', () => {
+  scriptInput.value = scriptText.textContent.trim();
+  editArea.classList.add('show');
+  playing = false;
+  playBtn.textContent = '▶ Iniciar';
+  statusIndicator.classList.remove('playing');
+});
+
+doneEditBtn.addEventListener('click', () => {
+  scriptText.textContent = scriptInput.value;
+  editArea.classList.remove('show');
+  posY = 0;
+  scrollArea.style.transform = 'translateY(0px)';
+});
+
+const showControlsBtn = document.getElementById('showControlsBtn');
+
+hideBtn.addEventListener('click', () => {
+  topbar.classList.add('hidden');
+  showControlsBtn.classList.add('show');
+});
+
+showControlsBtn.addEventListener('click', () => {
+  topbar.classList.remove('hidden');
+  showControlsBtn.classList.remove('show');
+});
+
+document.addEventListener('keydown', (e) => {
+  if(editArea.classList.contains('show')) return;
+  if(e.code === 'Space'){
+    e.preventDefault();
+    playing = !playing;
+    playBtn.textContent = playing ? '⏸ Pausar' : '▶ Iniciar';
+    statusIndicator.classList.toggle('playing', playing);
+  }
+  if(e.code === 'ArrowUp'){
+    e.preventDefault();
+    nudgeOffset += 70;
+  }
+  if(e.code === 'ArrowDown'){
+    e.preventDefault();
+    nudgeOffset -= 70;
+  }
+  if(e.code === 'ArrowRight'){
+    e.preventDefault();
+    manualSpeed = null;
+    speedInput.value = Math.min(8, parseInt(speedInput.value, 10) + 1);
+    const val = currentSpeed();
+    speedOut.textContent = val;
+    speedManual.value = val;
+  }
+  if(e.code === 'ArrowLeft'){
+    e.preventDefault();
+    manualSpeed = null;
+    speedInput.value = Math.max(0, parseInt(speedInput.value, 10) - 1);
+    const val = currentSpeed();
+    speedOut.textContent = val;
+    speedManual.value = val;
+  }
+  if(e.code === 'KeyH'){
+    topbar.classList.toggle('hidden');
+    showControlsBtn.classList.toggle('show', topbar.classList.contains('hidden'));
+  }
+  if(e.code === 'KeyS'){
+    stopBtn.click();
+  }
+  if(e.code === 'KeyD'){
+    editBtn.click();
+  }
+});
+
+  </script>
+</body>
+
+</html>
